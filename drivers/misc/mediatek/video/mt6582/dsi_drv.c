@@ -221,7 +221,11 @@ unsigned int custom_pll_clock_remap(int input_mipi_clock)
 #endif
 static void lcm_mdelay(UINT32 ms)
 {
-    udelay(1000 * ms);
+    // Using loop because large values for udelay causes '__bad_udelay' errors.
+    unsigned int i;
+    for(i=0; i<ms; i++) {
+        udelay(1000);
+    }
 }
 void DSI_Enable_Log(bool enable)
 {
